@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cmath>            // std::pow
 #include <cstddef>          // std::ptrdiff_t, std::size_t
+#include <functional>       // std::function
 #include <initializer_list> // std::initializer_list
 #include <iostream>         // std::cout, std::endl
 #include <iterator>         // std::random_access_iterator_tag
@@ -23,11 +23,14 @@
 
 template<class T>
 class LazyArray {
-    std::vector<T> m_coefficients;
-
+    typedef std::size_t     size_type;
+    typedef std::ptrdiff_t  difference_type;
+std::function<T(size_type)> m_func;
     /*
      * Even though this container is theoretically infinite in size, there does need to be a max value
-     * to stop at for iterators. If this isn't explicitly set through .setEnd(T), things that use .end() for traversing the container will keep going for a very, very long time (with some overflows thrown in the mix).
+     * to stop at for iterators. If this isn't explicitly set through .setEnd(T), things that use .end() 
+     * for traversing the container will keep going for a very, very long time (with some overflows 
+     * thrown in the mix).
      */
     T m_end{std::numeric_limits<T>::max()};
     // By default, this container will begin at zero and count up by 1 to m_end
@@ -38,67 +41,49 @@ public:
     }
 
     /*
-     * Constructed from an initializer list of arithmetic value T. Each value in the initalizer list
-     * corresponds to a coefficient of a polynomial. If LazyArray LZ{1, 6, 4, -3, 7} is constructed,
-     * the 'equation' of the container would be 1x^4 + 6x^3 + 4x^2 - 3x + 7.
+     * Constructor from a function that returns type T and accepts size_type as a parameter.
      */
-    LazyArray(std::initializer_list<T> l) {
-        LazyArray();
-        m_coefficients = l;
+    LazyArray(std::function<T(size_type)> func) : LazyArray() {
+        m_func = func;
     }
 
-    LazyArray(const LazyArray& lz) { m_coefficients = lz.m_coefficients; }
+    LazyArray(const LazyArray& lz) { m_func = lz.m_func; }
 
-    LazyArray(LazyArray&& lz) noexcept { m_coefficients = std::move(lz.m_coefficients); }
+    LazyArray(LazyArray&& lz) noexcept { m_func = std::move(lz.m_func); }
 
     // Assignment Operators
     LazyArray& operator= (LazyArray& other) {
-       m_coefficients = other.m_coefficients;
-       return *this;
+        m_func = other.m_func;
+        return *this;
     }
 
-    LazyArray& operator= (std::initializer_list<T>&& l) {
-       m_coefficients = l;
-       return *this;
+    LazyArray& operator= (std::function<T(size_type)>&& func) {
+        m_func = func;
+        return *this;
     }
 
     // Access functions
 
     // No bounds checking
-    T operator[] (const std::size_t I) {
+    T operator[] (const size_type I) {
         return this->valueAt(I);
     }
 
-    T at (const std::size_t I) {
+    T at (const size_type I) {
         if((I >= m_end) || (I < m_begin))
             throw std::out_of_range("");
 
         return this->valueAt(I);
     }
 
-    T valueAt(const std::size_t I) {
-        auto ritr = m_coefficients.rbegin();
-
-        std::size_t xpow = 0;
-        T finalVal{0};
-
-        for(;ritr != m_coefficients.rend();++ritr, ++xpow)
-            finalVal += *ritr * pow(I, xpow);
-
-        return finalVal;
+    T valueAt(const size_type I) {
+        return m_func(I);
     }
 
 
-    std::size_t size() const noexcept { return m_end - m_begin; }
+    size_type size() const noexcept { return m_end - m_begin; }
 
-    void swap(LazyArray& other) { std::swap(this->m_coefficients, other.m_coefficients); }
-
-    void print_coefficients() const noexcept {
-        for(const auto& i : m_coefficients) {
-            std::cout << i << ' ';
-        }
-        std::cout << std::endl;
-    }
+    void swap(LazyArray& other) { std::swap(this->m_func, other.m_func); }
 
     T getEnd() const noexcept { return m_end; }
 
@@ -109,7 +94,7 @@ public:
 
     std::vector<T> toVector() {
         std::vector<T> V;
-        for(auto i : *this)
+        for(const auto i : *this)
             V.push_back(i);
 
         return V;

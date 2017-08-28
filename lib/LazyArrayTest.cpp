@@ -3,34 +3,30 @@
 #include <numeric>
 
 int main() {
-    // LazyArray<std::string> LZ{"asdf", "qwerty"}; // Should fail to compile and raise a static assert error
-    LazyArray<long> LZ{2, 3, 5, 12};
-    std::cout << "Initializer list test: Should be '2 3 5 12'" << std::endl;
-    LZ.print_coefficients(); // Should print out the contents of the LZ array above
+    // LazyArray<std::string> LZ; // Should fail to compile and raise a static assert error
+    LazyArray<long> LZ( [](const std::size_t i)->long { return i * i; } );
+    std::cout << "Function test: Should be '4 16'" << std::endl;
+    std::cout << LZ[2] << ' ' << LZ[4] << std::endl;
     std::cout << "Max test: Should be the max value for whatever type is used for above" << std::endl;
     std::cout << LZ.getEnd() << std::endl; // Should print the std::numeric_limits::max() of the LazyArray type
 
     LazyArray<long> LZCopy(LZ);
-    std::cout << "Copy constructor test: Should print '2 3 5 12'" << std::endl;
-    LZCopy.print_coefficients(); // Should print the same as LZ.print_coefficients()
+    std::cout << "Copy constructor test: Should print '4 16'" << std::endl;
+    std::cout << LZCopy[2] << ' ' << LZCopy[4] << std::endl; 
 
-    LazyArray<long> LZSwapTest{1, 2, 3, 4, 5};
+    LazyArray<long> LZSwapTest( [](const std::size_t i)->long { return i + 1; });;
     LZSwapTest.swap(LZCopy);
-    std::cout << "Swap test: Should print '2 3 5 12'" << std::endl;
-    LZSwapTest.print_coefficients();
-    std::cout << "Swap test: Should print '1 2 3 4 5'" << std::endl;
-    LZCopy.print_coefficients();
+    std::cout << "Swap test: Should print '4 16'" << std::endl;
+    std::cout << LZSwapTest[2] << ' ' << LZSwapTest[4] << std::endl;
+    std::cout << "Swap test: Should print '1 2 3'" << std::endl;
+    std::cout << LZCopy[0] << ' ' << LZCopy[1] << ' ' << LZCopy[2] << std::endl;
 
-    LazyArray<int> MoveTest( LazyArray<int> {1, 2, 3, 4} );
-    std::cout << "Move test: Should print '1 2 3 4'" << std::endl;
-    MoveTest.print_coefficients();
-
-    LZCopy = {5, 4, 3, 2, 1};
-    std::cout << "Operator= initializer list test: Should print '5 4 3 2 1'" << std::endl;
-    LZCopy.print_coefficients();
+    LZCopy = [](const std::size_t i)->long { return i + 2; };
+    std::cout << "Operator= initializer list test: Should print '2 3'" << std::endl;
+    std::cout << LZCopy[0] << ' ' << LZCopy[1] << ' ' << std::endl;
 
     // LZCopy.end(); // Should throw a compile-time error saying that the container is infinite in size
-    LazyArray<long> AccessTest{3, 7};
+    LazyArray<long> AccessTest( [](const int x)->long { return 3*x+7; });;
     std::cout << AccessTest.at(2) << std::endl;
 
     std::cout << AccessTest.size() << std::endl;
