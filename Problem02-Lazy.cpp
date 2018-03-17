@@ -5,6 +5,7 @@
 constexpr double sqrt5{2.2360679774997896964091736};
 
 int main() {
+    // Binet's formula
     LazyArray<long> fibs([](const long x) {
         double a = (1 + sqrt5) / 2.0;
         double b = (1 - sqrt5) / 2.0;
