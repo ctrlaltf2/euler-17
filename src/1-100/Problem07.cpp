@@ -1,12 +1,12 @@
 #include <iostream>
 
-#include "util/primes.hpp"
+#include "primes.hpp"
 
 constexpr std::uint64_t n{10'001};
 
-int main() {
+void p7(std::ostream& os) {
     std::uint64_t currentPrime{2};
     for (std::uint64_t i{1}; i < n; ++i, currentPrime = nextPrime(currentPrime))
         ;
-    std::cout << currentPrime << '\n';
+    os << currentPrime << '\n';
 }

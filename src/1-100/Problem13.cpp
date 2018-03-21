@@ -1,6 +1,6 @@
 #include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
 
 std::vector<std::string> numbers = {
     "37107287533902102798797998220837590246510135740250",
@@ -102,21 +102,19 @@ std::vector<std::string> numbers = {
     "77158542502016545090413245809786882778948721859617",
     "72107838435069186155435662884062257473692284509516",
     "20849603980134001723930671666823555245252804609722",
-    "53503534226472524250874054075591789781264330331690"
-};
+    "53503534226472524250874054075591789781264330331690"};
 
-int main() {
+void p13(std::ostream& os) {
     unsigned int carryOver{0};
     std::string sum;
-    
-    for(int x = numbers[0].size() - 1; x >= 0;--x) {
+
+    for (int x = numbers[0].size() - 1; x >= 0; --x) {
         unsigned int workingSum{0};
-        for(const auto& number : numbers)
-            workingSum += number.at(x) - '0';
+        for (const auto& number : numbers) workingSum += number.at(x) - '0';
         workingSum += carryOver;
         sum.insert(0, 1, (workingSum % 10) + '0');
         carryOver = workingSum / 10;
     }
     sum.insert(0, std::to_string(carryOver));
-    std::cout << sum.substr(0, 10) << '\n';
+    os << sum.substr(0, 10) << '\n';
 }

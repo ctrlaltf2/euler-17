@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-int main() {
+void p4(std::ostream& os) {
     int max{0};
     for (int a = 999; a > 99; --a) {
         for (int b = a; b > 99; --b) {
@@ -14,5 +14,5 @@ int main() {
             if (reversed_product == product) max = std::max(max, a * b);
         }
     }
-    std::cout << max << '\n';
+    os << max << '\n';
 }

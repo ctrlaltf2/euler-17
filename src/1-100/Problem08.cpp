@@ -55,12 +55,12 @@ typename std::conditional<(sizeof(A) <= sizeof(B)), B, A>::type max(
     return a;
 }
 
-int main() {
+void p8(std::ostream& os) {
     std::uint64_t maxProduct{0};
     for (auto begin = numbers.begin(); begin != numbers.end() - goal; ++begin)
         maxProduct =
             max(maxProduct, std::accumulate(begin, begin + goal, 1ull,
                                             std::multiplies<std::uint64_t>()));
 
-    std::cout << maxProduct << '\n';
+    os << maxProduct << '\n';
 }

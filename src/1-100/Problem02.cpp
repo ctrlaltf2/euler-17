@@ -3,12 +3,12 @@
 #include <numeric>
 #include <vector>
 
-int main() {
+void p2(std::ostream& os) {
     std::vector<int> fibs = []() -> std::vector<int> {
         std::vector<int> ret{1, 2};
         int i{1};
 
-        for (;;) {
+        while (true) {
             int next = ret[i] + ret[i - 1];
 
             if (next >= 4'000'000) break;
@@ -23,7 +23,5 @@ int main() {
         std::remove_if(fibs.begin(), fibs.end(),
                        [](const int& i) -> bool { return (i % 2) == 1; }),
         fibs.end());
-    std::cout << std::accumulate(fibs.begin(), fibs.end(), 0) << std::endl;
-
-    return 0;
+    os << std::accumulate(fibs.begin(), fibs.end(), 0) << '\n';
 }

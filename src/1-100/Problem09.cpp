@@ -4,7 +4,7 @@
 
 constexpr int goal{1000};
 
-int main() {
+void p9(std::ostream& os) {
     for (std::uint64_t m = 1; m < 100; ++m) {
         for (std::uint64_t n = m; n < 100; ++n) {
             // Euclid's formula
@@ -24,8 +24,8 @@ int main() {
             int i{2};
             do {
                 if (i * (A + B + C) == goal) {
-                    std::cout << A * i * B * i * C * i << '\n';
-                    return 0;
+                    os << A * i * B * i * C * i << '\n';
+                    return;
                 }
             } while (i++ * (A + B + C) < goal);
         }

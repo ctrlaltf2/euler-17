@@ -1,11 +1,11 @@
 #include <cstdint>
 #include <iostream>
 
-#include "util/primes.hpp"
+#include "primes.hpp"
 
 constexpr std::uint32_t goal{2'000'000};
 
-int main() {
+void p10(std::ostream& os) {
     std::uint64_t sum{0};
     std::uint32_t currentPrime{2};
     while (currentPrime < goal) {
@@ -13,5 +13,5 @@ int main() {
         currentPrime = nextPrime(currentPrime);
     }
 
-    std::cout << sum << '\n';
+    os << sum << '\n';
 }

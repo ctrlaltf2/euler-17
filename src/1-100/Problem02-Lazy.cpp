@@ -1,10 +1,10 @@
-#include "lib/LazyArray.hpp"
+#include "LazyArray.hpp"
 
 #include <cmath>
 
 constexpr double sqrt5{2.2360679774997896964091736};
 
-int main() {
+void p2l(std::ostream& os) {
     // Binet's formula
     LazyArray<long> fibs([](const long x) {
         double a = (1 + sqrt5) / 2.0;
@@ -20,5 +20,5 @@ int main() {
         if (i % 2 == 0) sum += i;
     }
 
-    std::cout << sum << '\n';
+    os << sum << '\n';
 }
