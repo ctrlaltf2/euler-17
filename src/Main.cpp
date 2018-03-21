@@ -13,8 +13,9 @@
 int main(int argc, char** argv) {
     using namespace boost;
     const std::map<std::string, std::function<void(std::ostream&)>> funcMap = {
-        P(p1), P(p1l), P(p2),  P(p2l), P(p3),  P(p4),  P(p5),  P(p6),  P(p7),
-        P(p8), P(p9),  P(p10), P(p11), P(p12), P(p13), P(p14), P(p15), P(p16)};
+        P(p1),  P(p1l), P(p2),  P(p2l), P(p3),  P(p4),  P(p5),
+        P(p6),  P(p7),  P(p8),  P(p9),  P(p10), P(p11), P(p12),
+        P(p13), P(p14), P(p15), P(p16), P(p17)};
     try {
         program_options::options_description desc{"Options"};
         desc.add_options()("help,h", "Help")("problem,p",

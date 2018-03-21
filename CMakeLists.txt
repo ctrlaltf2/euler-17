@@ -28,6 +28,7 @@ add_executable(euler
             src/1-100/Problem14.cpp
             src/1-100/Problem15.cpp
             src/1-100/Problem16.cpp
+            src/1-100/Problem17.cpp
 )
 
 set_target_properties(euler
